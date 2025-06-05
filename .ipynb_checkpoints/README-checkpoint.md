@@ -3,7 +3,7 @@ This repository contains the notebooks and data used to produce the figures and 
 Linear Observational COnstraint". You can download it and run it on your own device. 
 
 The repository named "notebooks" contains ?? notebooks:
-    main_synthetic_data.ipynb: produces the figures ??? of the article
+    main_synthetic_data.ipynb: produces the figures 1 to 9 of the article
     main_real_data.ipynb: produces the figures ??? of the article
 
 The repository named "functions" contains the different functions used in the notebooks.
