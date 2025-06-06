@@ -20,3 +20,7 @@ The needed packages may have conflictual versions. We recommand the use of a vir
 - Go to the tab "Home". Make sure you use the new environment created, "toolbox", indicated on the top. Click on "Install" on Jupyter Notebook.
 - Click on "Launch" on Jupyter Notebook. A tab should open on your browser. Open the "ClimLoco" file, go to /notebook
 - Open and run "install_packages.ipynb" to install automatically all needed packages.
+
+# Example
+to do
+montrer les entrées et sortie de la fonction qui calcule l'interval
