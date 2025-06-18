@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import t
 
+from functions.compute_errors import err_interval_unconstrained, err_interval_constrained
+
 
 # DISPLAY PARAMETERS
 # Confidence of the confidence interval
@@ -159,9 +161,21 @@ def display_figure3(probability_interval_Y, confidence_interval_Y_per_dataset, X
     plt.show()
 
 
-def display_figure4(list_confidences, size_per_dataset , relativeError_im):
+def display_figure4():
+    # Compute the errors
+    list_confidences     = np.linspace(0.6,1,100)
+    list_M               = np.arange(2,51)
+    nb_confidences, nb_M = len(list_confidences), len(list_M)
+    relativeError_im     = np.zeros((nb_confidences, nb_M))
+
+    for id_confidence in range(nb_confidences):
+        for id_M in range(nb_M):
+            relativeError_im[id_confidence, id_M] = err_interval_unconstrained(
+                list_confidences[id_confidence], list_M[id_M])
+
+    # Display it
     plt.figure(dpi=dpi)
-    X, Y = np.meshgrid(list_confidences, size_per_dataset)
+    X, Y = np.meshgrid(list_confidences, list_M)
     plt.axhline(y=0.68, linestyle='dotted', color='black')
     for lev in [3,5,10,20,30]:
         CS = plt.contour(Y.T, X.T, relativeError_im, levels=[lev], colors='black')
@@ -384,9 +398,21 @@ def display_figure6(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
 
 
 
-def display_figure7(list_obs_stand, size_per_dataset, relativeError_im_con):
+def display_figure7():
+    list_obs_stand       = np.linspace(0, 2, 100)
+    list_M               = np.arange(2,51)
+    nb_M                 = len(list_M)
+    nb_obs_stand         = len(list_obs_stand)
+    relativeError_im_con = np.zeros((nb_obs_stand, nb_M))
+            
+    for id_obs_stand in range(nb_obs_stand):
+        for id_M in range(nb_M):
+            relativeError_im_con[id_obs_stand, id_M] = err_interval_constrained(
+                0.68, list_M[id_M], list_obs_stand[id_obs_stand])
+
+        
     plt.figure(dpi=dpi)
-    X, Y = np.meshgrid(list_obs_stand, size_per_dataset)
+    X, Y = np.meshgrid(list_obs_stand, list_M)
     for lev in [3,5,10,20,30]:
         CS = plt.contour(Y.T, X.T, relativeError_im_con, levels=[lev], colors='black')
         plt.clabel(CS, inline=True, fontsize=fontsize, fmt="{} %%".format(lev))
@@ -791,7 +817,13 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
     
     
 
-
+def print_probability_confidence_interval(probability_interval, confidence_intervals, size_per_dataset, interval_of="Y"):
+    print("Probability interval of Y:\n\t[{:.1f} +- {:.1f}]".format(np.mean(probability_interval), np.diff(probability_interval)[0]/2))
+    print("Realisations of the confidence interval of {}:".format(interval_of))
+    for i in range(len(confidence_intervals)):
+        interval = confidence_intervals[i]
+        print("\t[{:.1f} +- {:.1f}] (M={})".format(np.mean(interval), np.diff(interval)[0]/2, size_per_dataset[i]))
+    print("\n")
     
 
     
