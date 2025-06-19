@@ -138,6 +138,65 @@ def display_CI_Y_YX1_YX2(Y, X1, X2, X1_obs, X2_obs, unconstrained_CI,
     plt.show()
 
 
+def display_CI_Y_YX(Y, X, X_obs, unconstrained_CI,
+                        constrained_CI, array_x, constrained_CI_per_x,
+                        period_Y, period_X, reference_period):
+    
+    fig, axes = plt.subplots(1,2, figsize=(5,3), sharey=True, width_ratios=[0.3, 1])
+    
+    #--------------- First axe: the unconstrained interval
+    axes[0].scatter(2*np.ones(len(Y)), Y, label="climate models", s=50, marker="o", facecolor='none', edgecolors="black", alpha=1)
+    interval_unconstrained = plot_interval(axes[0], 0, unconstrained_CI, "black", lw_low, w_bar=w_bar, label=r"$CI_{90\%}(Y)$")
+    axes[0].set_xlim(-2, 3)
+    axes[0].set_xticks([])
+    
+    #--------------- Second axe: intervals constrained by X
+    markers, interval_constrained, _ = display_X_Y_relation(axes[1], X, Y, X_obs, constrained_CI, constrained_CI_per_x, array_x)
+    
+    # Label the axes
+    axes[1].set_xlabel("GSAT mean in {}-{} (°C)\nrelative to {}-{}".format(period_X[0], period_X[1], reference_period[0], reference_period[1]))
+    axes[0].set_ylabel("GSAT mean in {}-{} (°C)\nrelative to {}-{}".format(period_Y[0], period_Y[1], reference_period[0], reference_period[1]))
+    
+    # Vertical lines corresponding to the mean
+    ymin, ymax = axes[0].get_ylim()
+    axes[1].vlines(np.mean(X), ymin=0, ymax=np.mean(unconstrained_CI), linestyle='dotted',
+               color="black", linewidth=0.8, zorder=1000, alpha=1)
+    axes[0].set_ylim(ymin, ymax)
+    
+    # Horizontal lines corresponding to the unconstrained value
+    line_MMM = axes[0].hlines(np.mean(unconstrained_CI), linestyle='dotted', xmin=-2, xmax=0,
+                   colors="black", linewidth=0.8, zorder=10000, alpha=1, clip_on=False)
+    xmin, xmax = axes[1].get_xlim()
+    axes[1].hlines(np.mean(unconstrained_CI), linestyle='dotted', xmin=xmin, xmax=np.mean(X),
+                   colors="black", linewidth=0.8, zorder=10000, alpha=1, clip_on=False)
+    axes[1].set_xlim(xmin, xmax)
+        
+    
+    # Display arrows in the axes
+    display_arrows_axes(axes[0], remove_x=True)
+    display_arrows_axes(axes[1], label_X=r"$X$")
+    
+    # Display the multi-model mean and observation in the x axis
+    axes[1].text(np.mean(X_obs), ymin+0.2, "obs", ha='center', va='center', color="tab:green")
+    axes[1].vlines(np.mean(X_obs), ymin=ymin-0.5, ymax=ymin+0.08, color="tab:green")
+
+    leg = fig.legend([interval_unconstrained, interval_constrained, markers, line_MMM],
+               ["unconstrained", "constrained", "climate models", "multi-model-mean"],
+               loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=4, title="Confidence interval of Y:")
+    leg._legend_box.align = "left"
+    
+    # Titles
+    axes[0].set_title("(a) Unconstrained", pad=20, fontsize=11)
+    axes[1].set_title("(b) Constrained by "+r"$X$", pad=20, fontsize=11)
+    
+    plt.subplots_adjust(wspace=0.3)#, top=0.2)
+    
+    plt.show()
+
+
+    
+
+
 def display_figure_key_statistical_concepts(x, y, x_obs,
                                             confidence_level=0.9):
 
