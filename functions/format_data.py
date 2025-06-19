@@ -3,6 +3,9 @@ from sklearn.linear_model import LinearRegression
 
 
 def compute_trend_per_sample(data_perSample_perTime, times):
+    """
+    Compute the trend (linear slope in time) of the timeseries of each sample. 
+    """
     nb_samples, nb_times = data_perSample_perTime.shape
     trend_per_sample     = np.nan*np.zeros(nb_samples)
     for id_sample in range(nb_samples):
@@ -14,7 +17,12 @@ def compute_trend_per_sample(data_perSample_perTime, times):
     return trend_per_sample
 
 def compute_X_from_period(period, times, data_perSample_perTime, trend=False):
-    times_to_keep = np.logical_and(period[0]<=times, times<=period[1])
+    """
+    Compute X, the mean/trend on a given period.
+    """
+    times_to_keep = np.logical_and(period[0]<=times, times<=period[1]) # keep only the correct period
+
+    # Trend or mean
     if not trend:
         X = np.nanmean(data_perSample_perTime[:, times_to_keep], axis=1)
     else:
@@ -23,6 +31,8 @@ def compute_X_from_period(period, times, data_perSample_perTime, trend=False):
 
 
 def compute_correlation_from_period(period, CMIP6_times, CMIP6_global_tas, Y, period_Y, trend=False):
+    # Compute the correlation between a X and Y
+    
     X = compute_X_from_period(period, CMIP6_times, CMIP6_global_tas, trend=trend)
     corr = np.corrcoef(X,Y)[0,1]
     if trend:

@@ -8,7 +8,6 @@ from functions.compute_errors import err_interval_unconstrained, err_interval_co
 
 
 # DISPLAY PARAMETERS
-# Confidence of the confidence interval
 lw = 2
 dpi = 300
 fontsize = 12
@@ -17,8 +16,6 @@ lw_high = 3
 w_bar = 0.6
 color_cons_noiseless = "tab:red"
 color_cons_noisy = "tab:green"
-
-
 
 
 def plot_interval(ax, xposition, interval, color, lw, w_bar=0.4, label=None, linestyle=None, markersize=10):
@@ -81,10 +78,6 @@ def display_figure2(mu_X_theo, sigma_X_theo, confidence_level):
     plt.legend(fontsize=fontsize, ncol=2) # loc='center left', bbox_to_anchor=(1, 0.5), 
     plt.show()
     
-
-
-
-
 
 
 

@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 
 def compute_confidence_interval_Y(confidence_level, X_simu_per_dataset, Y_simu_per_dataset):
     """
-    Confidence interval of Y : Eq. 6 in the article
+    Confidence interval of Y : Eq. 6 in the article (warning: only for X univariate)
     """
     # Compute and store the estimated interval for each dataset
     list_estimated_interval = []
@@ -20,7 +20,7 @@ def compute_confidence_interval_Y(confidence_level, X_simu_per_dataset, Y_simu_p
 
 def compute_confidence_interval_Y_X_noiseless(confidence_level, X_simu_per_dataset, Y_simu_per_dataset, X_obs):
     """
-    Confidence interval of Y constrained by a noiseless observation of X : Eq. 15 in the article
+    Confidence interval of Y constrained by a noiseless observation of X : Eq. 15 in the article (warning: only for X univariate)
     """
     # Compute and store the estimated interval for each dataset
     list_estimated_interval = []
@@ -44,7 +44,7 @@ def compute_confidence_interval_Y_X_noiseless(confidence_level, X_simu_per_datas
 
 def compute_confidence_interval_Y_X_noisy(confidence_level, X_simu_per_dataset, Y_simu_per_dataset, X_obs, sigma_N):
     """
-    Confidence interval of Y constrained by a noiseless observation of X : Eq. 25 in the article
+    Confidence interval of Y constrained by a noiseless observation of X : Eq. 25 in the article (warning: only for X univariate)
     """
     # Compute and store the estimated interval for each dataset
     list_estimated_interval = []
@@ -71,6 +71,17 @@ def compute_confidence_interval_Y_X_noisy(confidence_level, X_simu_per_dataset, 
 def compute_confidence_intervals_X_multivariate(X, X_obs, Y, confidence_level, period_Y, reference_period,
                                  display=True, return_for_different_x=False,
                                  neglect_M=False, impose_SNR=0, precomputed_Cov_N=0, return_errors=False):
+    """
+    ClimLoco1.0: Confidence interval of Y constrained by a noiseless observation of X : Eq. 26 in the article (for X univariate or multivariate).
+
+    To perfom some tests, this function gives the opportunity to:
+    - neglect the limited sample size (parameter neglect_M),
+    - impose a given signal to noise ratio (parameter impose_SNR).
+
+    The parameter precomputed_Cov_N enables the user to provide a precomputed covariance matrix of the observational noise. 
+    The parameter return_errors is useful to give the confidence interval for other potential positions of X_obs (to trace the tube in the figure).
+    """
+    
     M, K     = X.shape
     if neglect_M:
         M = 99999999
@@ -128,6 +139,9 @@ def compute_confidence_intervals_X_multivariate(X, X_obs, Y, confidence_level, p
 
 
 def compute_Cox_confidence_intervals(X, X_obs, Y, confidence_level, var_N):
+    """
+    Confidence interval obtained using Cox et al. (2018) method instead of ClimLoco1.0 method.
+    """
     M     = len(X)
     mu_Y  = np.mean(Y)
     mu_X  = np.mean(X)

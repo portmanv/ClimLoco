@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_histogram(ax, X, color="tab:blue", alpha=0.5, label="multi-model"):
+    """
+    Plot the histogram of a dataset X, and the closest gaussian distribution, to compare them. 
+    """
     if len(label):
         label_hist = label+" density histogram"
         label_line = label+" fitted gaussian"
@@ -18,6 +21,9 @@ def plot_histogram(ax, X, color="tab:blue", alpha=0.5, label="multi-model"):
 def plot_histograms(ax, X, title="", xlabel="", ylabel="", X_obs=[],
                     color_simu="tab:blue", color_obs="tab:green",
                     label_simu="multi-model", label_obs="observed"):
+    """
+    Plot the histograms and  closest gaussian distribution of Y, X and potentially a X_obs. 
+    """
     plot_histogram(ax, X, color=color_simu, label=label_simu)
     
     ax.set_title(title)
@@ -29,3 +35,4 @@ def plot_histograms(ax, X, title="", xlabel="", ylabel="", X_obs=[],
         ax2 = ax.twinx()
         plot_histogram(ax2, X_obs, color=color_obs, label=label_obs)
         ax2.tick_params(axis='y', labelcolor=color_obs)
+        
