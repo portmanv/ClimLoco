@@ -8,7 +8,7 @@ The repository "notebooks" also contains:
 - the notebook "figures_synthetic_data.ipynb", producing the main figures of the article from synthetic data,
 - the notebook "case_study.ipynb", producing the figures and sensitivity tests from a real case study, of the corresponding appendix in the article.
 
-# Installation:
+# Installation
 The required packages may have conflicting versions. We recommend using a virtual environment where the package versions are fixed. We propose the following procedure:
 Install Anaconda: https://docs.anaconda.com/anaconda/install/.
 Open Anaconda Navigator.
