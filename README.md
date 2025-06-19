@@ -1,24 +1,14 @@
-# ClimLoco
-This repository contains the Python notebooks and data used to produce the figures and values in the article "ClimLoco1.0: CLimate variable confidence Interval of Multivariate Linear Observational COnstraint". You can download and run the repository on your own device.
+# ClimLoco1.0
+This repository is attached to the article titled "ClimLoco1.0: CLimate variable confidence Interval of Multivariate Linear Observational COnstraint".
 
-The "notebooks" repository contains three notebooks:
-    main_synthetic_data.ipynb: produces the main figures in the article and the synthetic data required to generate them.
-    main_real_data.ipynb applies CLimLoco1.0 to real data in a case study based on global mean temperature.
-    install_packages.ipynb runs to install all the necessary packages (see the "Installation" paragraph below).
-    
-The "functions" repository contains the different functions used in the notebooks.
+The use of ClimLoco1.0 is illustrated in a simple example, user-friendly, in the form of a python notebook. You can either watch it through the following link, or download the git repository to being able to run it on your own device and modify it (see the next section "installation").
+https://github.com/portmanv/ClimLoco/blob/main/notebooks/tutorial.ipynb
 
-The "data" repository contains the different datasets used in the notebooks. This data repository contains various files:
-- The "ssp245_timeserie_global_tas" repository contains timeseries of global mean temperature between 180 and 2100 for 32 climate models from CMIP6, using the SSP2-4.5 scenario. This data is the result of preprocessing data from the ESPRI database to calculate the global average. The raw data is too large.
-- The file called 'HadCRUT.5.0.2.0.analysis.ensemble_series.global.annual.nc' contains observed data from the HadCRUT5 reanalysis.
-    
-# Use of ClimLoco
-As illustrated in the notebook 'notebooks/main_real_data.ipynb', the inputs and outputs of ClimLoco are:
-- (inputs) alpha (the confidence level; e.g. 90%), X and Y (e.g. past and future temperatures, respectively), the observational dataset (e.g. HadCRUT5) and the climate model ensemble used (e.g. CMIP6).
-- (output) the confidence interval of Y, constrained by real-world (noisy) observations of X.
+The repository "notebooks" also contains:
+- the notebook "figures_synthetic_data.ipynb", producing the main figures of the article from synthetic data,
+- the notebook "case_study.ipynb", producing the figures and sensitivity tests from a real case study, of the corresponding appendix in the article.
 
-
-# Installation:
+# Installation
 The required packages may have conflicting versions. We recommend using a virtual environment where the package versions are fixed. We propose the following procedure:
 Install Anaconda: https://docs.anaconda.com/anaconda/install/.
 Open Anaconda Navigator.
