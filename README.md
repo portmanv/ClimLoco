@@ -1,7 +1,7 @@
 # ClimLoco1.0
-Supported package for manuscript "ClimLoco1.0: CLimate variable confidence Interval of Multivariate Linear Observational COnstraint".
+This repository is attached to the article titled "ClimLoco1.0: CLimate variable confidence Interval of Multivariate Linear Observational COnstraint".
 
-The use of ClimLoco1.0 is illustrated in a simple example, user-friendly, in the form of a python notebook. You can either see it through the following link, or download the git repository to being able to run it on your own device and modify it (see the next section "installation").
+The use of ClimLoco1.0 is illustrated in a simple example, user-friendly, in the form of a python notebook. You can either watch it through the following link, or download the git repository to being able to run it on your own device and modify it (see the next section "installation").
 https://github.com/portmanv/ClimLoco/blob/main/notebooks/tutorial.ipynb
 
 The repository "notebooks" also contains:
