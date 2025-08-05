@@ -21,7 +21,7 @@ color_cons_noisy = "tab:green"
 def plot_interval(ax, xposition, interval, color, lw, w_bar=0.4, label=None, linestyle=None, markersize=10):
     center = np.mean(np.array(interval).flatten())
     error  = np.diff(np.array(interval).flatten())[0]/2
-    ax.errorbar(xposition, center, yerr=np.abs(error), color=color, capsize=20*w_bar, fmt="_",
+    return ax.errorbar(xposition, center, yerr=np.abs(error), color=color, capsize=20*w_bar, fmt="_",
                 lw=lw, capthick=lw, markersize=markersize, label=label, linestyle=linestyle, clip_on=True, zorder=1000)
 
 
@@ -463,9 +463,10 @@ def display_figure8(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
                             alpha=alpha, color=colors[1])
     
     # Constrained by noisy
-    axes[0].plot(x, beta_0_noisy+beta_1_noisy*x, color=colors[2], linewidth=lw_low, linestyle='solid', label=r"$y=b_0+b_1\,x$")
+    amplification_factor = 1.8
+    axes[0].plot(x, beta_0_noisy+beta_1_noisy*x, color=colors[2], linewidth=lw_low*amplification_factor, linestyle='solid', label=r"$y=b_0+b_1\,x$")
     axes[0].set_xticks([mu_X_theo, X_obs], labels=[r"$\mu_X$", r"$x_0^N$"], fontsize=fontsize)
-    plot_interval(axes[0], X_obs, probability_interval_Y_X_noisy, colors[2], lw_low, w_bar=w_bar, label=label_uncons_theo)
+    plot_interval(axes[0], X_obs, probability_interval_Y_X_noisy, colors[2], lw_low*amplification_factor, w_bar=w_bar, label=label_uncons_theo)
     axes[0].fill_between(x, beta_0_noisy+beta_1_noisy*x-np.abs(np.diff(probability_interval_Y_X_noisy))/2,
                             beta_0_noisy+beta_1_noisy*x+np.abs(np.diff(probability_interval_Y_X_noisy))/2,
                             alpha=alpha, color=colors[2])
@@ -488,7 +489,7 @@ def display_figure8(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
     # Constrained non-noisy VS constrained noisy VS unconstrained
     plot_interval(axes[1], -1, probability_interval_Y, colors[0], lw_low, w_bar=w_bar, label=label_uncons_theo)
     plot_interval(axes[1], 1, probability_interval_Y_X_noiseless, colors[1], lw_low, w_bar=w_bar, label=label_cons_theo)
-    plot_interval(axes[1], 0, probability_interval_Y_X_noisy, colors[2], lw_low, w_bar=w_bar, label=label_cons_theo)
+    plot_interval(axes[1], 0, probability_interval_Y_X_noisy, colors[2], lw_low*amplification_factor, w_bar=w_bar, label=label_cons_theo)
     axes[1].set_title("(b) Comparison\n\n", fontsize=fontsize)
     axes[1].set_xlim(-1.5,1.5)
     axes[1].set_xticks([-1,1,0])
@@ -547,6 +548,7 @@ def display_figure9(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
     
     step  = 0.5
     alpha = 0.15
+    amplification_factor = 1.8
     
     ymin,ymax = np.copy(Ymin)-0.5, np.copy(Ymax)+1.5
     xmin,xmax = np.copy(Xmin), np.copy(Xmax)+1
@@ -579,7 +581,7 @@ def display_figure9(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
         axes[i,0].set_xticks([np.mean(X_simu), X_obs], labels=[r"$\hat{\mu}_X$", r"$x_0^N$"], fontsize=fontsize)
         for ticklabel, tickcolor in zip(axes[i,0].get_xticklabels(), ["black", color_cons_noisy]):
                 ticklabel.set_color(tickcolor)
-        plot_interval(axes[i,0], X_obs, interval_noisy_est, colors[2], lw_low, w_bar=w_bar, label=label3)
+        plot_interval(axes[i,0], X_obs, interval_noisy_est, colors[2], lw_low*amplification_factor, w_bar=w_bar, label=label3)
         axes[i,0].fill_between(x, intervals_nonnoisy_est[:,0], intervals_nonnoisy_est[:,1],
                              alpha=alpha, color=colors[1])
         axes[i,0].fill_between(x, intervals_noisy_est[:,0], intervals_noisy_est[:,1],
@@ -588,7 +590,7 @@ def display_figure9(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
         axes[i,0].plot(x, np.mean(intervals_nonnoisy_est, axis=1), color=colors[1],
                  linewidth=lw_high/2, linestyle='solid', label=r"$y=\hat{a}_0+\hat{a}_1\,x$")
         axes[i,0].plot(x, np.mean(intervals_noisy_est, axis=1), color=colors[2],
-                 linewidth=lw_high/2, linestyle='solid', label=r"$y=\hat{b}_0+\hat{b}_1\,x$")
+                 linewidth=lw_high*amplification_factor/2, linestyle='solid', label=r"$y=\hat{b}_0+\hat{b}_1\,x$")
         if i==1: axes[i,0].legend(fontsize=fontsize, bbox_to_anchor=(0.5, -0.2), loc='upper center', ncols=2)
         
         # Pointillés
@@ -605,7 +607,7 @@ def display_figure9(mu_X_theo, mu_Y_theo, sigma_X_theo, sigma_Y_theo, corr_theo,
         # Constrained VS unconstrained
         plot_interval(axes[i,1], -1, interval_unconstrained_est, colors[0], lw_low, w_bar=w_bar, label=label3)
         plot_interval(axes[i,1], 1, interval_nonnoisy_est, colors[1], lw_low, w_bar=w_bar, label=label3)
-        plot_interval(axes[i,1], 0, interval_noisy_est, colors[2], lw_low, w_bar=w_bar, label=label3)
+        plot_interval(axes[i,1], 0, interval_noisy_est, colors[2], lw_low*amplification_factor, w_bar=w_bar, label=label3)
         if i==0: axes[i,1].set_title("(b) Comparison\n\n", fontsize=fontsize)
         axes[i,1].set_xlim(-1.5,1.5)
         if i==1:
@@ -666,6 +668,7 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
 
     x_space = 0.5
     before_interv = 0.1
+    amplification_factor = 1.8
     
     xmargin = 1
     ymargin = 1
@@ -683,9 +686,9 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
     fig, ax1 = plt.subplots(1,1, figsize=(10,6), dpi=dpi)
     
     #--------- Unconstrained
-    plot_interval(ax1, xmax+3*x_space, interval_obs0, color1, lw, w_bar=0.4)
+    interval1 = plot_interval(ax1, xmax+3*x_space, interval_obs0, color1, lw, w_bar=0.4*amplification_factor, label="unconstrained")
     
-    #--------- Constrained (non-noisy) intervals
+    #--------- Constrained intervals
     beta_1_est = np.cov(X_simu, Y_simu)[0,1]/(np.var(X_simu))
     beta_0_est = np.mean(Y_simu) - beta_1_est*np.mean(X_simu)
     y          = beta_0_est + beta_1_est*x
@@ -695,7 +698,7 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
     line2, = ax1.plot(x,y, color=color2, linestyle=linestyle2, linewidth=linewidth)
 
     ax1.fill_between(x, intervals_obs1[:,0], intervals_obs1[:,1], color=color2, alpha=0.2)
-    plot_interval(ax1, xmax+1*x_space, interval_obs1, color2, lw, w_bar=0.4)
+    interval2 = plot_interval(ax1, xmax+1*x_space, interval_obs1, color2, lw, w_bar=0.4, label="constrained by a\nnoiseless observation of X")
     ax1.set_xlim(xmin, xmax)
     ax1.set_ylim(ymin, ymax)
 
@@ -703,10 +706,10 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
     beta_0_est = np.mean(Y_simu) - beta_1_est*np.mean(X_simu)
     y          = beta_0_est + beta_1_est*x
 
-    line3, = ax1.plot(x,y, color=color3, linestyle=linestyle3_, linewidth=linewidth)
+    line3, = ax1.plot(x,y, color=color3, linestyle=linestyle3_, linewidth=linewidth*amplification_factor)
     ax1.fill_between(x, intervals_obs2[:,0], intervals_obs2[:,1], color=color3, alpha=0.2)
     
-    plot_interval(ax1, xmax+2*x_space, interval_obs2, color3, lw, w_bar=0.4)
+    interval3 = plot_interval(ax1, xmax+2*x_space, interval_obs2, color3, lw*amplification_factor, w_bar=0.4, label="constrained by a\nnoisy observation of X")
 
     j = 0
     list_colors = [color3, color2] # color1
@@ -759,7 +762,7 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
     ax1.vlines(X_obs, color="gray", linestyle="solid", ymax=mmax_, ymin=-1000, linewidth=3*linewidth_main, zorder=1000) #linestyle_main
     
     
-    #--------------- Axes et titres
+    #--------------- Axes and titles
     ax1.set_xticks([X_obs, np.mean(X_simu)])
     ax1.set_yticks([])
     ax1.set_xticklabels(["observation", "multi-model mean"], fontsize=fontsize, color="gray")
@@ -777,7 +780,7 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
     
         
     line1, = plt.plot(x+1000, y, color=color1)
-    fig.legend([line1, line2, line3, line4],
+    fig.legend([interval1, interval2, interval3, line4],
                ["unconstrained",
                 "constrained by a\nnoiseless observation of X",
                 "constrained by a\nnoisy observation of X", "One climate model"
@@ -785,10 +788,10 @@ def display_figure10(X_simu_per_dataset, Y_simu_per_dataset, x, X_obs, sigma_N,
                 loc='center left', fontsize=fontsize,
                title="Confidence intervals of Y:", title_fontsize=fontsize,
                alignment='left', bbox_to_anchor=(0.11, 0.78))
+
     
     
-    
-    #--------------- Flèche au bout des axes
+    #--------------- Arrows
     xmin,xmax=np.copy(ax1.get_xlim())
     ymin,ymax=np.copy(ax1.get_ylim())
     ax1.axhline(ymin, xmax=0.78, clip_on=True, color="black") 
